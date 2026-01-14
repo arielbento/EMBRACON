@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Embracon | Consórcio Empresarial - Segurança e Resultados</title>
+     <link rel="icon" type="image/png" href="logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Consórcios regulamentados pelo Banco Central. Mais de 35 anos impulsionando empresas brasileiras.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #b71818;
+            --primary-dark: #8a1212;
+            --primary-light: #e53935;
+            --white: #ffffff;
+            --gray-light: #f5f5f5;
+            --gray: #333333;
+            --shadow: 0 10px 30px rgba(183, 24, 24, 0.15);
+            --shadow-hover: 0 20px 40px rgba(183, 24, 24, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--white);
+            color: var(--gray);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Animated Background Elements */
+        .bg-element {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(183, 24, 24, 0.05) 0%, rgba(183, 24, 24, 0.02) 100%);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bg-element-1 {
+            top: 10%;
+            left: 5%;
+            transform: translateY(-100px);
+        }
+
+        .bg-element-2 {
+            bottom: 10%;
+            right: 5%;
+            transform: translateY(100px);
+        }
+
+        .bg-element-3 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        .bg-element.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Header */
+        .header {
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: var(--white);
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 5px 20px rgba(183, 24, 24, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled {
+            padding: 15px 60px;
+            box-shadow: 0 10px 30px rgba(183, 24, 24, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-badge {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--white);
+            transform: rotate(45deg);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-badge span {
+            transform: rotate(-45deg);
+        }
+
+        .logo-badge:hover {
+            transform: rotate(0deg) scale(1.1);
+            background: var(--primary-dark);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gray);
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 60px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+            z-index: 0;
+            transform: translateX(100px);
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-bg.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .hero-content {
+            width: 50%;
+            z-index: 1;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+        }
+
+        .hero-content.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .hero h1 span {
+            display: block;
+            color: var(--gray);
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 500px;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: var(--gray-light);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            margin: 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+        }
+
+        .highlight-box.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .highlight-box strong {
+            color: var(--primary);
+            font-size: 20px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.9s;
+        }
+
+        .stats.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        /* Form Section */
+        .form-section {
+            padding: 100px 60px;
+            background: var(--white);
+            position: relative;
+        }
+
+        .form-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(183, 24, 24, 0.03) 0%, transparent 100%);
+            clip-path: polygon(0% 15%, 100% 0%, 100% 85%, 0% 100%);
+            z-index: 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-bg.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-title.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .section-title p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--gray);
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 2px solid var(--primary);
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+        }
+
+        .form-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-container:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .form-header {
+            background: var(--primary);
+            padding: 25px 40px;
+            color: var(--white);
+        }
+
+        .form-header h3 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray);
+            margin-left: 5px;
+        }
+
+        input, select {
+            padding: 16px 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            background: var(--white);
+            color: var(--gray);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(183, 24, 24, 0.1);
+        }
+
+        .submit-btn {
+            grid-column: span 2;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(183, 24, 24, 0.2);
+        }
+
+        .submit-btn i {
+            font-size: 20px;
+        }
+
+        /* Benefits */
+        .benefits {
+            padding: 100px 60px;
+            background: var(--gray-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefits-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(183, 24, 24, 0.03) 100%);
+            clip-path: polygon(0% 0%, 100% 15%, 100% 100%, 0% 85%);
+            z-index: 0;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .benefits-bg.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .benefits-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+        }
+
+        .benefits-title.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .benefits-title h2 {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .benefits-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .benefit-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border-top: 5px solid var(--primary);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .benefit-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .benefit-card:nth-child(2) { transition-delay: 0.1s; }
+        .benefit-card:nth-child(3) { transition-delay: 0.2s; }
+        .benefit-card:nth-child(4) { transition-delay: 0.3s; }
+        .benefit-card:nth-child(5) { transition-delay: 0.4s; }
+        .benefit-card:nth-child(6) { transition-delay: 0.5s; }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            color: var(--white);
+            font-size: 24px;
+        }
+
+        .benefit-card h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .benefit-card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px;
+            background: var(--gray);
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(183, 24, 24, 0.1) 0%, transparent 100%);
+            z-index: 0;
+            opacity: 0;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .footer-bg.active {
+            opacity: 1;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .footer-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .footer-contact {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .contact-item i {
+            color: var(--primary-light);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* Loading & Messages */
+        .loading, .success-message, .error-message {
+            display: none;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .loading {
+            background: rgba(183, 24, 24, 0.1);
+            color: var(--primary);
+        }
+
+        .success-message {
+            background: rgba(183, 24, 24, 0.1);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .error-message {
+            background: rgba(183, 24, 24, 0.1);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero-bg {
+                width: 50%;
+            }
+            
+            .hero-content {
+                width: 60%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header {
+                padding: 20px 30px;
+            }
+            
+            .hero {
+                padding: 100px 30px 30px;
+                flex-direction: column;
+            }
+            
+            .hero-bg {
+                width: 100%;
+                height: 40%;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);
+            }
+            
+            .hero-content {
+                width: 100%;
+                margin-top: 40%;
+            }
+            
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .form-section, .benefits {
+                padding: 60px 30px;
+            }
+            
+            form {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width, .submit-btn {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer {
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .section-title h2, .benefits-title h2 {
+                font-size: 32px;
+            }
+            
+            .form-header h3 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="logo">
+            <div class="logo-badge">
+                <span>E</span>
+            </div>
+            <div>
+                <div class="logo-text">EMBRACON</div>
+                <div class="logo-sub">CONSÓRCIO EMPRESARIAL</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-content" id="heroContent">
+            <h1>Consórcio <span>Empresarial</span></h1>
+            <p>Desde 1988 impulsionando empresas brasileiras com segurança, transparência e os melhores resultados do mercado.</p>
+            
+            <div class="highlight-box" id="highlightBox">
+                <strong>Regulamentado pelo Banco Central</strong>
+                Segurança total para o seu investimento empresarial, com todas as operações supervisionadas pelo órgão máximo do sistema financeiro nacional.
+            </div>
+            
+            <div class="stats" id="heroStats">
+                <div class="stat-item">
+                    <div class="stat-number">35+</div>
+                    <div class="stat-label">Anos de Experiência</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">R$ 2B+</div>
+                    <div class="stat-label">Em Consórcios</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15k+</div>
+                    <div class="stat-label">Empresas Atendidas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section" id="formSection">
+        <div class="form-bg" id="formBg"></div>
+        <div class="section-title" id="formTitle">
+            <h2>Simule Seu Consórcio</h2>
+            <p>Preencha o formulário abaixo e receba uma proposta personalizada em minutos</p>
+        </div>
+        
+        <div class="form-container" id="formContainer">
+            <div class="form-header">
+                <h3>Formulário de Simulação</h3>
+                <p>Preencha todos os campos para uma análise precisa</p>
+            </div>
+            
+            <div class="form-content">
+                <form id="leadForm">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo *</label>
+                        <input type="text" id="nome" placeholder="Digite seu nome completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profissao">Profissão *</label>
+                        <input type="text" id="profissao" placeholder="Ex: Empresário, Gerente, Diretor" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="renda">Renda Mensal *</label>
+                        <select id="renda" required>
+                            <option value="">Selecione sua renda</option>
+                            <option value="Até R$ 5.000">Até R$ 5.000</option>
+                            <option value="R$ 5.000 a R$ 10.000">R$ 5.000 a R$ 10.000</option>
+                            <option value="R$ 10.000 a R$ 20.000">R$ 10.000 a R$ 20.000</option>
+                            <option value="R$ 20.000 a R$ 50.000">R$ 20.000 a R$ 50.000</option>
+                            <option value="Acima de R$ 50.000">Acima de R$ 50.000</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="parcela">Parcela Ideal (mensal) *</label>
+                        <select id="parcela" required>
+                            <option value="">Selecione a parcela</option>
+                            <option value="Até R$ 500">Até R$ 500</option>
+                            <option value="R$ 500 a R$ 1.000">R$ 500 a R$ 1.000</option>
+                            <option value="R$ 1.000 a R$ 2.000">R$ 1.000 a R$ 2.000</option>
+                            <option value="R$ 2.000 a R$ 5.000">R$ 2.000 a R$ 5.000</option>
+                            <option value="Acima de R$ 5.000">Acima de R$ 5.000</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Telefone/WhatsApp *</label>
+                        <input type="tel" id="telefone" placeholder="(47) 99999-9999" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" placeholder="seu.email@empresa.com" required>
+                    </div>
+                    
+                    <div class="loading" id="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Preparando mensagem para WhatsApp...
+                    </div>
+                    
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle"></i> Redirecionando para WhatsApp...
+                    </div>
+                    
+                    <div class="error-message" id="errorMessage">
+                        <i class="fas fa-exclamation-circle"></i> Por favor, preencha todos os campos corretamente.
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <i class="fab fa-whatsapp"></i> FALAR NO WHATSAPP AGORA
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefitsSection">
+        <div class="benefits-bg" id="benefitsBg"></div>
+        <div class="benefits-title" id="benefitsTitle">
+            <h2>Vantagens Embracon</h2>
+            <p>Por que mais de 15.000 empresas escolheram a Embracon</p>
+        </div>
+        
+        <div class="benefits-grid">
+            <div class="benefit-card" id="benefit1">
+                <div class="benefit-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>100% Regulamentado</h3>
+                <p>Todos os nossos consórcios são regulamentados e fiscalizados pelo Banco Central do Brasil, garantindo total segurança jurídica.</p>
+            </div>
+            
+            <div class="benefit-card" id="benefit2">
+                <div class="benefit-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Taxas Competitivas</h3>
+                <p>As melhores taxas do mercado, sem juros abusivos. Transparência total em todas as etapas do processo.</p>
+            </div>
+            
+            <div class="benefit-card" id="benefit3">
+                <div class="benefit-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Processo Ágil</h3>
+                <p>Da simulação à contemplação, todo o processo é digital e descomplicado. Economize tempo e ganhe agilidade.</p>
+            </div>
+            
+            <div class="benefit-card" id="benefit4">
+                <div class="benefit-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Atendimento Especializado</h3>
+                <p>Consultores especializados no seu segmento de atuação. Entendemos as necessidades específicas da sua empresa.</p>
+            </div>
+            
+            <div class="benefit-card" id="benefit5">
+                <div class="benefit-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Planejamento Garantido</h3>
+                <p>Previsibilidade financeira para sua empresa. Saiba exatamente quando e como seus recursos estarão disponíveis.</p>
+            </div>
+            
+            <div class="benefit-card" id="benefit6">
+                <div class="benefit-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Prêmios e Reconhecimento</h3>
+                <p>35 anos de excelência no mercado, com diversos prêmios e reconhecimentos pela qualidade dos nossos serviços.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="footerSection">
+        <div class="footer-bg" id="footerBg"></div>
+        <div class="footer-content" id="footerContent">
+            <div class="footer-logo">EMBRACON</div>
+            <div class="footer-text">
+                Há mais de três décadas sendo a escolha certa para empresas que buscam crescimento com segurança e planejamento.
+            </div>
+            
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>(47) 8807-1042</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>carlosreisconsultant@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Segunda a Sexta: 8h às 18h | Sábado: 8h às 12h</span>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                © 2024 Embracon Consórcios Empresariais. Todos os direitos reservados.<br>
+                CNPJ: 58.113.812/0001-23 | Consórcios regulamentados pelo Banco Central do Brasil
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Special animation for background elements
+                    if (entry.target.classList.contains('bg-element')) {
+                        setTimeout(() => {
+                            entry.target.style.transition = 'all 2s cubic-bezier(0.4, 0, 0.2, 1)';
+                            entry.target.style.transform = 'translate(0, 0) scale(1.1)';
+                        }, 300);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.hero-bg, .hero-content, .highlight-box, .stats, .section-title, .form-container, .form-bg, .benefits-title, .benefits-bg, .benefit-card, .footer-bg, .footer-content, .bg-element').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Form submission with WhatsApp redirect
+        document.getElementById('leadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                nome: document.getElementById('nome').value.trim(),
+                profissao: document.getElementById('profissao').value.trim(),
+                renda: document.getElementById('renda').value,
+                parcela: document.getElementById('parcela').value,
+                telefone: document.getElementById('telefone').value.trim(),
+                email: document.getElementById('email').value.trim()
+            };
+            
+            // Validate
+            if (!Object.values(formData).every(value => value)) {
+                showMessage('error');
+                return;
+            }
+            
+            // Show loading
+            showMessage('loading');
+            
+            // Prepare WhatsApp message
+            const telefoneWhatsApp = "554788071042"; // Número sem formatação
+            
+            // Criar mensagem formatada para WhatsApp
+            const mensagem = `*SIMULAÇÃO DE CONSÓRCIO - EMBRACON*%0A%0A*👤 Nome:* ${formData.nome}%0A*💼 Profissão:* ${formData.profissao}%0A*💰 Renda Mensal:* ${formData.renda}%0A*📅 Parcela Ideal:* ${formData.parcela}%0A*📱 Telefone:* ${formData.telefone}%0A*📧 E-mail:* ${formData.email}%0A%0A*📋 Solicito simulação de consórcio empresarial*%0A*🕒 Preferência de contato:* WhatsApp%0A%0A_Esta solicitação foi gerada através do site oficial da Embracon._`;
+            
+            // URL do WhatsApp
+            const whatsappUrl = `https://wa.me/${telefoneWhatsApp}?text=${mensagem}`;
+            
+            // Aguardar 1.5 segundos para mostrar o loading
+            setTimeout(() => {
+                showMessage('success');
+                
+                // Redirecionar para WhatsApp após 1 segundo
+                setTimeout(() => {
+                    // Abrir WhatsApp em nova aba
+                    window.open(whatsappUrl, '_blank');
+                    
+                    // Salvar dados no localStorage
+                    localStorage.setItem('embracon_simulation', JSON.stringify({
+                        ...formData,
+                        timestamp: new Date().toISOString()
+                    }));
+                    
+                    // Resetar formulário
+                    this.reset();
+                    hideMessages();
+                    
+                }, 1000);
+                
+            }, 1500);
+        });
+
+        // Phone mask (SEM PRÉ-PREENCHIMENTO)
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 2) {
+                    value = '(' + value;
+                } else if (value.length <= 7) {
+                    value = '(' + value.substring(0,2) + ') ' + value.substring(2);
+                } else if (value.length <= 11) {
+                    value = '(' + value.substring(0,2) + ') ' + value.substring(2,7) + '-' + value.substring(7);
+                } else {
+                    value = '(' + value.substring(0,2) + ') ' + value.substring(2,7) + '-' + value.substring(7,11);
+                }
+            }
+            e.target.value = value;
+        });
+
+        // Message functions
+        function showMessage(type) {
+            hideMessages();
+            
+            switch(type) {
+                case 'loading':
+                    document.getElementById('loading').style.display = 'block';
+                    document.getElementById('submitBtn').disabled = true;
+                    document.getElementById('submitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> PREPARANDO...';
+                    break;
+                case 'success':
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('submitBtn').disabled = false;
+                    document.getElementById('submitBtn').innerHTML = '<i class="fab fa-whatsapp"></i> REDIRECIONANDO...';
+                    break;
+                case 'error':
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('submitBtn').disabled = false;
+                    document.getElementById('submitBtn').innerHTML = '<i class="fab fa-whatsapp"></i> TENTAR NOVAMENTE';
+                    
+                    // Shake effect
+                    const form = document.querySelector('.form-container');
+                    form.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        form.style.animation = '';
+                    }, 500);
+                    break;
+            }
+        }
+
+        function hideMessages() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+                20%, 40%, 60%, 80% { transform: translateX(10px); }
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0) rotate(0deg); }
+                50% { transform: translateY(-20px) rotate(180deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        hideMessages();
+
+        // Load saved data (apenas para preenchimento automático se existir)
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('embracon_simulation');
+            if (saved) {
+                const data = JSON.parse(saved);
+                // Opcional: Preencher automaticamente se quiser
+                // Descomente as linhas abaixo se quiser preenchimento automático
+                /*
+                document.getElementById('nome').value = data.nome || '';
+                document.getElementById('profissao').value = data.profissao || '';
+                document.getElementById('renda').value = data.renda || '';
+                document.getElementById('parcela').value = data.parcela || '';
+                document.getElementById('telefone').value = data.telefone || '';
+                document.getElementById('email').value = data.email || '';
+                */
+            }
+            
+            // Animate background elements on load
+            setTimeout(() => {
+                document.querySelectorAll('.bg-element').forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('active');
+                    }, index * 300);
+                });
+            }, 500);
+        });
+
+        // Parallax effect for background elements on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            document.querySelectorAll('.bg-element').forEach((el, index) => {
+                const speed = 0.2 + (index * 0.1);
+                el.style.transform = `translateY(${rate * speed}px)`;
+            });
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
